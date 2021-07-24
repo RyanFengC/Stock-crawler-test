@@ -15,21 +15,24 @@ import datetime,time
 def Stock_data_download(stock_ID,start_time,end_time,Sdata):
     df = web.DataReader(name=stock_ID +'.TW', data_source='yahoo', start=start_time, end=end_time) #name為股票代號名稱 start、end為資料下載期間
     df.insert(loc=0,column='Date',value=pd.to_datetime(df.index).date)
-    df = Sdata.append(df)#新增最新資料
-    df.to_excel(stock_ID +'TW.xlsx',index=False)
+    if df['Date']==start_time:
+        print('NO New Data')
+    else:
+        df = Sdata.append(df)#新增最新資料
+        df.to_excel(stock_ID +'TW.xlsx',index=False)
     return(df)
        
 
 def Stock_plot(plotdata,plot_name):
 
-    plt.style.use("classic")               # 使用主題樣式
+    plt.style.use("ggplot")               # 使用ggplot主題樣式
     #畫第一條線，plt.plot(x, y, c)參數分別為x軸資料、y軸資料及線顏色 = 紅色
     plt.plot(plotdata['Date'], plotdata['Low'],c = "r")  
     #畫第二條線，plt.plot(x, y, c)參數分別為x軸資料、y軸資料、線顏色 = 綠色及線型式 = -.
     plt.plot(plotdata['Date'], plotdata['High'], "g-.")
     
     # 設定圖例，參數為標籤、位置
-    plt.legend(labels=['Date','Low','High'], loc = 'best')
+    plt.legend(labels=['Low','High'], loc = 'best')
     plt.xlabel("Date", fontweight = "bold")                # 設定x軸標題及粗體
     plt.ylabel("Price", fontweight = "bold")    # 設定y軸標題及粗體
     plt.title(plot_name+" Stock curve", fontsize = 15, fontweight = "bold", y = 1.1)   # 設定標題、文字大小、粗體及位置
