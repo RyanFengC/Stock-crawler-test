@@ -14,7 +14,7 @@ import datetime,time
 # .............................下載股價資料................................................
 def Stock_data_download(stock_ID,start_time,end_time,Sdata):
     df = web.DataReader(name=stock_ID +'.TW', data_source='yahoo', start=start_time, end=end_time) #name為股票代號名稱 start、end為資料下載期間
-    df.insert(loc=0,column='Date',value=pd.to_datetime(df.index).date)
+    df.insert(loc=0,column='Date',value=pd.to_datetime(df.index).dt.date)#將取得的資料日期存入表格中，並只存入日期，去除時間
     if df['Date']==start_time:
         print('NO New Data')
     else:
@@ -66,5 +66,8 @@ for row in range( len(Focus_stock_name)):
     else:
         print(filename+'TW :'+'latest data')   
     
-    Stock_plot(stock_data,filename)
+    try:
+        Stock_plot(stock_data,filename)
+    except:
+        print(filename+"TW.xlsx 找不到此檔案!")
 
