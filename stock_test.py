@@ -22,7 +22,7 @@ def Stock_data_download(stock_ID,start_time,end_time,Sdata):
 
 def Stock_plot(plotdata,plot_name):
 
-    plt.style.use("ggplot")               # 使用ggplot主題樣式
+    plt.style.use("classic")               # 使用主題樣式
     #畫第一條線，plt.plot(x, y, c)參數分別為x軸資料、y軸資料及線顏色 = 紅色
     plt.plot(plotdata['Date'], plotdata['Low'],c = "r")  
     #畫第二條線，plt.plot(x, y, c)參數分別為x軸資料、y軸資料、線顏色 = 綠色及線型式 = -.
