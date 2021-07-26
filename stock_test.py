@@ -14,8 +14,8 @@ import datetime,time
 # .............................下載股價資料................................................
 def Stock_data_download(stock_ID,start_time,end_time,Sdata):
     df = web.DataReader(name=stock_ID +'.TW', data_source='yahoo', start=start_time, end=end_time) #name為股票代號名稱 start、end為資料下載期間
-    df.insert(loc=0,column='Date',value=pd.to_datetime(df.index).dt.date)#將取得的資料日期存入表格中，並只存入日期，去除時間
-    if df['Date']==start_time:
+    df.insert(loc=0,column='Date',value=pd.to_datetime(df.index).date)#將取得的資料日期存入表格中，並只存入日期，去除時間
+    if df['Date'][len(df)-1]==start_time:
         print('NO New Data')
     else:
         df = Sdata.append(df)#新增最新資料
@@ -57,10 +57,13 @@ for row in range( len(Focus_stock_name)):
     today=datetime.date.today()
     if  start_day-datetime.timedelta(days=1)!=today:
         #判斷數據裡的資料是否為今天，若不是則更新
+        stock_data=Stock_data_download(filename,start_day,today,stock_data)
+        '''
         try:
             stock_data=Stock_data_download(filename,start_day,today,stock_data)
         except:
             print('沒有最新資料')
+        '''
         print(filename+'TW :'+'sucessful update to latest data') 
         time.sleep(5)#休息怕程式抓太快被ban
     else:
